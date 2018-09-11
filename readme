@@ -1,0 +1,4 @@
+docker run --name angular-app -p 8002:80 \
+	-e CONTEXT_PATH="/myapp/" \
+	-v /Users/docker/nginx/app_:/usr/share/nginx/html:ro \
+	-d angular-app

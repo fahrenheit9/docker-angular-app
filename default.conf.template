@@ -1,0 +1,18 @@
+map $http_x_forwarded_proto $upstream_scheme {
+    "https" "https";
+    default "http";
+}
+
+server {
+    listen       80;
+    server_name  localhost;
+
+    location ${CONTEXT_PATH} {
+        alias   /usr/share/nginx/html/;
+        sub_filter '<base href="/">' '<base href="${CONTEXT_PATH}">';
+        sub_filter_once on;
+    	try_files $uri $uri/index.html =404;
+    }
+
+    rewrite ^([^.\?]*[^/])$ $upstream_scheme://$http_host$1/ permanent;
+}
